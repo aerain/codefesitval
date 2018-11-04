@@ -15,37 +15,36 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3" >
     <!------ Include the above in your HEAD tag ---------->
   </head>
   <body>
-      <!-- <div th:if="${param.error}">
-          Invalid username and password.
-      </div>
-      <div th:if="${param.logout}">
-          You have been logged out.
-      </div> -->
-    <div class=" fadeInDown SlideExpandUp" >
-      <div id="formContent">
-        <!-- Tabs Titles -->
+    <div class="login-bg">
+      <video src="/images/code.mp4" autoplay loop style="position: absolute; width:100vw; height: 100vh; object-fit: cover;"></video>"
+      <div class=" fadeInDown SlideExpandUp" >
+          <div id="formContent">
+            <!-- Tabs Titles -->
+            
+            <!-- Icon -->
+            <div class="fadeIn first" >
+              <!-- <img src="/images/simbol.jpg" id="icon" alt="User Icon" /> -->
+              <h1 style="margin-top: 30px;">컴퓨터공학전공 <br>코딩페스티벌</h1>
+            </div>
         
-        <!-- Icon -->
-        <div class="fadeIn first" >
-          <img src="/images/simbol.jpg" id="icon" alt="User Icon" />
-          <h1 style="font-weight: 100;">컴퓨터공학전공 <br>코딩페스티벌</h1>
+            <!-- Login Form -->
+            <form th:action="@{/login}" method="post">
+              <input type="text" id="login" class="auth fadeIn second" name="username" placeholder="사용자 ID" />
+              <input type="password" id="password" class="auth fadeIn third" name="password" placeholder="비밀번호" />
+              <input type="submit" class="fadeIn fourth" value="로그인" />
+            </form>
+        
+            <!-- Remind Passowrd -->
+            <div id="formFooter">
+              <a class="underlineHover" href="http://ce.jejunu.ac.kr/">제주대학교 컴공 바로가기</a>
+              <div th:if="${param.error}"> 아이디 혹은 패스워드가 잘못 되었습니다.</div>
+              <div th:if="${param.logout}"> 로그아웃되었습니다.  </div>
+            </div>
+        
+          </div>
         </div>
-    
-        <!-- Login Form -->
-        <form th:action="@{/login}" method="post">
-          <input type="text" id="login" class="fadeIn second auth" name="login" placeholder="사용자 ID" />
-          <input type="password" id="password" class="fadeIn third auth" name="login" placeholder="비밀번호" />
-          <input type="submit" class="fadeIn fourth" value="로그인" />
-        </form>
-    
-        <!-- Remind Passowrd -->
-        <div id="formFooter">
-          <a class="underlineHover" href="http://ce.jejunu.ac.kr/">제주대학교 컴공 바로가기</a>
-          <div th:if="${param.error}"> 아이디 혹은 패스워드가 잘못 되었습니다.</div>
-        </div>
-    
-      </div>
     </div>
+    
     <div>
     
     </div>
