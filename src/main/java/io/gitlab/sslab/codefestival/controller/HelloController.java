@@ -1,4 +1,4 @@
-package io.gitlab.sslab.codefestival;
+package io.gitlab.sslab.codefestival.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
