@@ -1,12 +1,15 @@
 package io.gitlab.sslab.codefestival.service;
 
+import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
 
+import org.apache.tomcat.util.http.fileupload.IOUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -27,6 +30,7 @@ public class CompileController {
     @ResponseBody
     public String getCompile(@RequestParam String code) {
         String babo = "";
+        StringBuilder sb = new StringBuilder();
         try {
             writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream("compile/test.js"), "UTF-8"));
             writer.write(code);
@@ -38,19 +42,21 @@ public class CompileController {
             } catch(Exception e) {}
         }
         try {
-            Process node = 
+            ProcessBuilder node = 
             new ProcessBuilder()
-                .command("node", "compile/test.js")
-                .inheritIO()
-                .start();
-            System.out.println(node.getInputStream().toString() + node.getOutputStream().toString());
-            
-            node.waitFor();
+                .command("node", "compile/test.js");
+
+            final Process p = node.start();
+            BufferedReader br = new BufferedReader(new InputStreamReader(p.getInputStream()));
+
+            String line;
+            while((line=br.readLine()) != null) sb.append(line);
 
         } catch(Exception ex) {
 
         } finally {
-            return babo;
+            System.out.println(sb.toString());
+            return sb.toString();
         }
     }
 
