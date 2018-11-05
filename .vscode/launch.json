@@ -6,24 +6,13 @@
     "configurations": [
         {
             "type": "java",
-            "name": "CodeLens (Launch) - DemoApplication",
-            "request": "launch",
-            "cwd": "${workspaceFolder}",
-            "console": "internalConsole",
-            "stopOnEntry": false,
-            "mainClass": "io.gitlab.sslab.codefestival.DemoApplication",
-            "args": "",
-            "projectName": "codefestival"
-        },
-        {
-            "type": "java",
             "name": "Spring Boot-BaseApplication<codefestival>",
             "request": "launch",
             "cwd": "${workspaceFolder}",
             "console": "internalConsole",
             "mainClass": "io.gitlab.sslab.codefestival.BaseApplication",
             "projectName": "codefestival",
-            "args": ""
+            "args": []
         }
     ]
 }
