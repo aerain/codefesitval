@@ -5,11 +5,9 @@ import java.io.BufferedWriter;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
 
-import org.apache.tomcat.util.http.fileupload.IOUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -29,7 +27,6 @@ public class CompileController {
     )
     @ResponseBody
     public String getCompile(@RequestParam String code) {
-        String babo = "";
         StringBuilder sb = new StringBuilder();
         try {
             writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream("compile/test.js"), "UTF-8"));
