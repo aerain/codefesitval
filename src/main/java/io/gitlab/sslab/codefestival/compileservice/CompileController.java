@@ -1,4 +1,4 @@
-package io.gitlab.sslab.codefestival.service;
+package io.gitlab.sslab.codefestival.compileservice;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
