@@ -39,7 +39,7 @@ public class User {
         this.scoreGet = scoreGet;
     }
 
-    public boolean isScoreBool() {
+    public boolean getScoreBool() {
         return scoreBool;
     }
 
