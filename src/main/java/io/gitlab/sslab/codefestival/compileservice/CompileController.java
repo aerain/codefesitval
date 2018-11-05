@@ -45,14 +45,12 @@ public class CompileController {
 
             final Process p = node.start();
             BufferedReader br = new BufferedReader(new InputStreamReader(p.getInputStream()));
-
             String line;
             while((line=br.readLine()) != null) sb.append(line);
 
         } catch(Exception ex) {
-
+            ex.printStackTrace();
         } finally {
-            System.out.println(sb.toString());
             return sb.toString();
         }
     }

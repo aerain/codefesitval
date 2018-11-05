@@ -37,7 +37,7 @@
 
 .content{
     display: flex;
-    
+    flex:1;
     
     height:100%;
     text-align: center;
@@ -80,13 +80,11 @@
   padding: 30px;
 }
 
-<style>
-    .left,
-    .right {
+    /* .right {
         top: 50%;
         float: left;
         transform: translateY(125%);
-    }
+    } */
 
     .left {
         background: #343a40;
@@ -108,7 +106,7 @@
         width: 100%;
         transition: width 1s;
         display: flex;
-       
+        flex: 2;
         border-width: 1px;
     }
 
@@ -138,9 +136,8 @@
         overflow: hidden;
         color: #fff;
     }
-</style>
 
-input{
+/* input{
     width: 250px;
     height: 40px;
     line-height: 40px;
@@ -154,7 +151,7 @@ input{
     text-align: center;
     border: 1px solid white;
     background: rgba(255,255,255,0.2);
-}
+} */
 p{
 border-bottom: 5px;
 color: white;
