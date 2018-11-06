@@ -1,5 +1,10 @@
 <!DOCTYPE html>
-<html lang="en">
+<html 
+lang="ko"
+xmlns="http://www.w3.org/1999/xhtml" 
+xmlns:th="http://www.thymeleaf.org"
+xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3"
+>
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -46,9 +51,11 @@
               <div class="collapse navbar-collapse" id="navbar1">
                 <ul class="navbar-nav ml-auto"> 
               
-            <li class="nav-item"><a class="nav-link" href="html-components.html"> 반갑습니다. 라이언 님 </a></li>
-           
-            <a class="btn ml-2 btn-warning" href="http://bootstrap-ecommerce.com">로그아웃</a></li>
+            <li class="nav-item"><a class="nav-link" href="html-components.html" th:inline="text"> 반갑습니다. [[${#httpServletRequest.remoteUser}]] 님 </a></li>
+            <li><form th:action="@{/logout}" method="post">
+                <input type="submit" class="btn ml-2 btn-warning" value="Sign Out"/>
+            </form></li>
+            <!-- <a class="btn ml-2 btn-warning" href="http://bootstrap-ecommerce.com">로그아웃</a></li> -->
                 </ul>
               </div>
             </nav>
@@ -95,22 +102,9 @@
             </div>
         </div>
         <!--이곳은 에디터와 결과창입니다.-->
-              <div class="right">
-                    
+              <div class="right"> 
                   <div class="EditAndResult">
-                    
-                    <div class="editor slideDown">
-                    import pyfame
-                        <br>
-                        <br>
-                    public static void main(String[] args){
-
-
-                        
-                    }
-                        
-                    </div>
-              
+                    <textarea id="textbox" class="editor slideDown"></textarea>
                  <div class="result slideUp">
                 <div class="VBhead">
                     <div class="bitem">
@@ -219,6 +213,6 @@
 
 </footer>
 
-
+<script src="/javascripts/textarea.js"></script>
 </body>
 </html>
