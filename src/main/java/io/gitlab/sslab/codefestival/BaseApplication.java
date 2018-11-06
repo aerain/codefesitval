@@ -19,12 +19,14 @@ public class BaseApplication {
 		SpringApplication.run(BaseApplication.class, args);
 
 		UserDao userDao = new UserDao();
-		User user = userDao.get("최원범_id");
+		User user = userDao.get("최원범_3");
 		System.out.println(user.getId());
 		System.out.println(user.getPassword());
 		System.out.println(user.getName());
+		System.out.println(user.getGrade());
 		System.out.println(user.getScoreGet());
-		System.out.println(user.getScoreBool());
-
+		System.out.println(user.getFirstBool());
+		System.out.println(user.getSecondBool());
+		System.out.println(user.getThirdBool());
 	}
 }

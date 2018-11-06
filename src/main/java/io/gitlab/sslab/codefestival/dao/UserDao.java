@@ -21,8 +21,11 @@ public class UserDao {
         user.setId(resultSet.getString("id"));
         user.setPassword(resultSet.getString("password"));
         user.setName(resultSet.getString("name"));
+        user.setGrade(resultSet.getInt("grade"));
         user.setScoreGet(resultSet.getInt("score_get"));
-        user.setScoreBool(resultSet.getBoolean("score_bool"));
+        user.setFirstBool(resultSet.getBoolean("first_bool"));
+        user.setSecondBool(resultSet.getBoolean("second_bool"));
+        user.setThirdBool(resultSet.getBoolean("third_bool"));
 
         resultSet.close();
         preparedStatement.close();
