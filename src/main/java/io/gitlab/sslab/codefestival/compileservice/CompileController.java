@@ -9,6 +9,8 @@ import java.io.OutputStreamWriter;
 import java.io.Writer;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -21,9 +23,8 @@ public class CompileController {
 
     private Writer writer = null;
 
-    @RequestMapping(
-        value="/compile", 
-        method=RequestMethod.GET
+    @GetMapping(
+        value="/compile"
     )
     @ResponseBody
     public String getCompile(@RequestParam String code) {
@@ -54,13 +55,37 @@ public class CompileController {
         }
     }
 
-    @RequestMapping(
-        value="/compile", 
-        method=RequestMethod.POST,
+    @PostMapping(
+        value="/compile",
         produces= "application/json;"
     )
     @ResponseBody
     public String postCompile(@RequestBody String code) {
-        return "바보";
+        System.out.println(code);
+        StringBuilder sb = new StringBuilder();
+        try {
+            writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream("compile/test.js"), "UTF-8"));
+            writer.write(code);
+        } catch (IOException ex) {
+
+        } finally {
+            try {
+                writer.close();
+            } catch(Exception e) {}
+        }
+        try {
+            ProcessBuilder node = 
+            new ProcessBuilder()
+                .command("node", "compile/test.js");
+
+            final Process p = node.start();
+            BufferedReader br = new BufferedReader(new InputStreamReader(p.getInputStream()));
+            String line;
+            while((line=br.readLine()) != null) sb.append(line);
+        } catch(Exception ex) {
+            ex.printStackTrace();
+        } finally {
+            return sb.toString();
+        }
     }
 }
