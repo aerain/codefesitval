@@ -23,6 +23,7 @@
   color: white;
   padding-left: 15px;
   padding-top: 15px;
+  border:solid black 1px;
 }
 
 .sidebar{
@@ -47,6 +48,11 @@
 
 }
 
+.selectLanguage{
+text-align: center;
+background-color: #343a40;
+
+}
 .row{
   flex: none;
     height: 70%;
@@ -58,6 +64,7 @@
     text-align: center;
     background-color: #343a40;
     border-top: solid black 1px;
+    height: 20%;
     
 }
 .container{
