@@ -32,7 +32,9 @@ dependencies {
 	implementation('org.springframework.boot:spring-boot-starter-remote-shell')
 	// implementation('org.springframework.session:spring-session-jdbc')
 	implementation('org.mariadb.jdbc:mariadb-java-client')
-
+	
+	implementation('com.navercorp.lucy:lucy-xss')
+	implementation('com.navercorp.lucy:lucy-xss-servlet')
 	runtimeOnly('mysql:mysql-connector-java')
 
 	compileOnly('org.projectlombok:lombok')

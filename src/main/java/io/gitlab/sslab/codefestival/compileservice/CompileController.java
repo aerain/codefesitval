@@ -61,6 +61,6 @@ public class CompileController {
     )
     @ResponseBody
     public String postCompile(@RequestBody String code) {
-        return code;
+        return "바보";
     }
 }

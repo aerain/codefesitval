@@ -1,1 +1,1 @@
-console.log("노드제이에스");
+let i = "babo";console.log(i);
