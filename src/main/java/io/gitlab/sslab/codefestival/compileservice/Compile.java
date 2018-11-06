@@ -6,9 +6,17 @@ import java.util.Date;
 public class Compile {
     private ProcessBuilder compileProcess;
 
+    /**
+     * compile
+     * 
+     * @param lang String 형. 사용할 언어 명시. Available(c, cpp, node, python)
+     * @param codeCreator String 형. 
+     * @return
+     */
     public static String compile(String lang, String codeCreator) {
         Compile compile = new Compile();
         String resultString = "";
+
         // 파일 경로 형식 예제 : compile/이청길14/이청길14-2018-11-10.java
         String filePath = "compile/" + codeCreator + "/";
         String fileName = codeCreator + "-" + new SimpleDateFormat("yyyy-MM-dd").format(new Date());
