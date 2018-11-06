@@ -47,7 +47,6 @@ public class CompileController {
             BufferedReader br = new BufferedReader(new InputStreamReader(p.getInputStream()));
             String line;
             while((line=br.readLine()) != null) sb.append(line);
-
         } catch(Exception ex) {
             ex.printStackTrace();
         } finally {
@@ -55,7 +54,11 @@ public class CompileController {
         }
     }
 
-    @RequestMapping(value="/compile", method=RequestMethod.POST)
+    @RequestMapping(
+        value="/compile", 
+        method=RequestMethod.POST,
+        produces= "application/json;"
+    )
     @ResponseBody
     public String postCompile(@RequestBody String code) {
         return code;
