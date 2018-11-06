@@ -63,3 +63,6 @@ CREATE TABLE problem_grade_four(
   testcase TEXT(65535) NOT NULL,
   answer_input TEXT(65535) NOT NULL
 ) DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
+
+/* 테스트 데이터 */
+INSERT INTO users(id, password, name, grade, score_get, first_bool, second_bool, third_bool) VALUES ("최원범_3", "abcde", "최원범", 3, 0);
