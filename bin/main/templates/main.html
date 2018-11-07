@@ -36,6 +36,8 @@
 
     <link rel="stylesheet" href="/stylesheets/Main.css">
     <link rel="stylesheet" href="/stylesheets/footer.css">
+    <script src="/javascripts/templateCode.js"></script>
+    
     <title>제주대학교 컴퓨터공학전공 코드페스티벌</title>
 </head>
 
@@ -119,12 +121,21 @@
             <div class="right">
                
                 <div class="EditAndResult">
-                        <div class="selectLanguage">
+                        <!-- <div class="selectLanguage">
                                 <span><button>Python3</button></span>
                                 <span><button>Java</button></span>
                                 <span><button>C/C++</button></span>
                                 <span><button>javascript</button></span>
-                            </div>
+                            </div> -->
+                    <div class="selectLanguage">
+                        <select onchange="onLangChange()" name="language" class="lang">
+                            <option class="lang-val" value="c">C</option>
+                            <option class="lang-val" value="cpp">C++</option>
+                            <option class="lang-val" value="java">JAVA</option>
+                            <option class="lang-val" value="js">JavaScript</option>
+                            <option class="lang-val" value="py">Python3</option>
+                        </select>
+                    </div>
                     <textarea id="textbox" class="editor slideDown"></textarea>
                     
                     <div class="result slideUp">

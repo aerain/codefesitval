@@ -1,6 +1,12 @@
 var submitCode = document.querySelector('#submitCode');
 var codeBlock = document.querySelector('#textbox');
 var resultBlock = document.querySelector('#code_input');
+var langSel = document.querySelector('.lang');
+
+function onLangChange() {
+    let langValue = langSel.value;
+    codeBlock.value = template[langValue];
+}
 
 submitCode.addEventListener('mousedown', function(event) {
     let code = codeBlock.value;
@@ -22,3 +28,5 @@ submitCode.addEventListener('mousedown', function(event) {
         .then(data => data.text())
         .then(compile => resultBlock.innerText = compile);
 });
+
+onLangChange();

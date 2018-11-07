@@ -17,6 +17,19 @@
     display: flex;
     flex-direction: column;
 }
+
+select.lang {
+  width: 100px;
+  background-color:#343a40;
+  padding:20px;
+  border:0;
+}
+
+select.lang > .lang-val {
+  color: #ffffff;
+  font-size: 30pt;
+}
+
 .editor{
   background-color: #343a40;
   flex:5 0;
@@ -49,7 +62,7 @@
 }
 
 .selectLanguage{
-text-align: center;
+text-align: right;
 background-color: #343a40;
 
 }
