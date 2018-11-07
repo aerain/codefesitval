@@ -21,7 +21,7 @@ submitCode.addEventListener('mousedown', function(event) {
             'body': JSON.stringify({
                 'code': code,
                 'createAuthor': 'user',
-                'language' : 'js'
+                'language' : langSel.value
             }),
         }
         )
