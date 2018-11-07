@@ -1,7 +1,5 @@
 package io.gitlab.sslab.codefestival.model;
 
-import javax.xml.bind.annotation.XmlRootElement;
-
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 // @XmlRootElement(name="compile")

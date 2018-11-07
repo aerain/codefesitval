@@ -24,11 +24,14 @@ public class Compile {
         Compile compile = new Compile();
 
         // 파일 경로 형식 예제 : compile/이청길14/이청길14-2018-11-10.java
-        String filePath = "compile/" + createAuthor;
+        String filePath = "compile/" + createAuthor + "/" + lang;
         String fileName = createAuthor + "-" + new SimpleDateFormat("yy-MM-dd-kk-mm-ss").format(new Date()) + "." + lang;
 
         compile.hasFolder(filePath);
         compile.makeFile(filePath, fileName, code);
+
+        // 자바 클래스명 맞춰주기 위해서
+        if(lang.equals("java")) compile.makeFile(filePath, "Main.java", code);
         
         try {
             switch(lang) {
@@ -44,6 +47,7 @@ public class Compile {
                 case "py":
                     break;
                 case "java":
+                    resultStringBuilder = compile.javaCompile(filePath, "Main.java");
                     break;
                 default:
                     resultStringBuilder.append("혼날래?");
@@ -90,6 +94,36 @@ public class Compile {
         return "c++였습니다.";
     }
 
+    public StringBuilder javaCompile(final String filePath, final String fileName) {
+        StringBuilder sb = new StringBuilder();
+
+        Runnable javaRun = () -> {
+            try {
+                final Process compile = 
+                new ProcessBuilder()
+                .command("javac", "-encoding", "UTF-8", filePath + "/" + fileName)
+                .inheritIO()
+                .start();
+
+                compile.waitFor();
+
+                final Process execute =
+                new ProcessBuilder()
+                .command("java", "-cp", filePath, "Main")
+                .start();
+    
+                getOutputStringBuilder(sb, execute);
+    
+            } catch (Exception io){
+                throw new RuntimeException();
+            }
+        };
+
+        startSubProcess(javaRun);
+        
+        return sb;
+    }
+
     public StringBuilder runNode(final String filePath, final String fileName) {
         StringBuilder sb = new StringBuilder();
         
@@ -132,6 +166,7 @@ public class Compile {
         BufferedReader br = new BufferedReader(new InputStreamReader(execute.getInputStream()));
         String line;
         while((line=br.readLine()) != null) {
+            System.out.println(line);
             sb.append(line);
             sb.append(System.getProperty("line.separator"));
         }
