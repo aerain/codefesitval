@@ -1,91 +1,39 @@
 package io.gitlab.sslab.codefestival.compileservice;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
 import java.io.Writer;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+
+import io.gitlab.sslab.codefestival.model.CompileRequest;
+
+
 
 
 @Controller
 public class CompileController {
-
-    private Writer writer = null;
-
+    Writer writer = null;
     @GetMapping(
         value="/compile"
     )
     @ResponseBody
     public String getCompile(@RequestParam String code) {
-        StringBuilder sb = new StringBuilder();
-        try {
-            writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream("compile/test.js"), "UTF-8"));
-            writer.write(code);
-        } catch (IOException ex) {
-
-        } finally {
-            try {
-                writer.close();
-            } catch(Exception e) {}
-        }
-        try {
-            ProcessBuilder node = 
-            new ProcessBuilder()
-                .command("node", "compile/test.js");
-
-            final Process p = node.start();
-            BufferedReader br = new BufferedReader(new InputStreamReader(p.getInputStream()));
-            String line;
-            while((line=br.readLine()) != null) sb.append(line);
-        } catch(Exception ex) {
-            ex.printStackTrace();
-        } finally {
-            return sb.toString();
-        }
+        return "안돼";
     }
 
     @PostMapping(
         value="/compile",
-        produces= "application/json;"
+        produces= "application/json"
     )
     @ResponseBody
-    public String postCompile(@RequestBody String code) {
-        System.out.println(code);
-        StringBuilder sb = new StringBuilder();
-        try {
-            writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream("compile/test.js"), "UTF-8"));
-            writer.write(code);
-        } catch (IOException ex) {
-
-        } finally {
-            try {
-                writer.close();
-            } catch(Exception e) {}
-        }
-        try {
-            ProcessBuilder node = 
-            new ProcessBuilder()
-                .command("node", "compile/test.js");
-
-            final Process p = node.start();
-            BufferedReader br = new BufferedReader(new InputStreamReader(p.getInputStream()));
-            String line;
-            while((line=br.readLine()) != null) sb.append(line);
-        } catch(Exception ex) {
-            ex.printStackTrace();
-        } finally {
-            return sb.toString();
-        }
+    public String postCompile(@RequestBody CompileRequest code) {
+        String result = Compile.compile(code.getLanguage(), code.getCreateAuthor(), code.getCode());
+        
+        System.out.println(code.toString());
+        return result;
     }
 }

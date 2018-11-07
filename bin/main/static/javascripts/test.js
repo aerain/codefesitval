@@ -9,12 +9,14 @@ submitCode.addEventListener('mousedown', function(event) {
         `/compile`, 
         {
             'method':'POST',
-            'mode': 'no-cors',
             'headers': {
                 'Content-Type': 'application/json',
-                'X-XSS-Protecton': '1',
             },
-            'body': code,
+            'body': JSON.stringify({
+                'code': code,
+                'createAuthor': 'user',
+                'language' : 'js'
+            }),
         }
         )
         .then(data => data.text())
