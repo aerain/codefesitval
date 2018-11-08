@@ -70,7 +70,7 @@ public class Compile {
             try {
                 final Process compile = 
                 new ProcessBuilder()
-                    .command("clang++", "-std=c++11", "-O2", "-Wno-unused-result", filePath + "/" + fileName, "-o", executeFilePath)
+                    .command("gcc", "-O2", "-Wno-unused-result", filePath + "/" + fileName, "-o", executeFilePath)
                     .inheritIO()
                     .start();
                 compile.waitFor();
@@ -101,7 +101,7 @@ public class Compile {
             try {
                 final Process compile = 
                 new ProcessBuilder()
-                    .command("clang", "-O2", filePath + "/" + fileName, "-o", executeFilePath)
+                    .command("g++", "-std=c++11", "-O2", filePath + "/" + fileName, "-o", executeFilePath)
                     .inheritIO()
                     .start();
                 compile.waitFor();
