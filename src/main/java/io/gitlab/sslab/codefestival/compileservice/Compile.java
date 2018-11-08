@@ -4,8 +4,8 @@ import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileOutputStream;
-import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.text.SimpleDateFormat;
@@ -71,17 +71,20 @@ public class Compile {
             try {
                 final Process compile = 
                 new ProcessBuilder()
-                    .command("gcc", "-O2", "-Wno-unused-result", filePath + "/" + fileName, "-o", executeFilePath)
-                    .inheritIO()
+                    .command("gcc", "-O2", filePath + "/" + fileName, "-o", executeFilePath)
                     .start();
+                    
+                getOutputStringBuilder(sb, compile, true);
                 compile.waitFor();
+
+                if(sb.length() != 0) return;
 
                 final Process execute =
                 new ProcessBuilder()
                     .command("bash", "-c", executeFilePath)
                     .start();
                 
-                getOutputStringBuilder(sb, execute);
+                getOutputStringBuilder(sb, execute, false);
 
                 execute.waitFor();
 
@@ -102,17 +105,20 @@ public class Compile {
             try {
                 final Process compile = 
                 new ProcessBuilder()
-                    .command("g++", "-std=c++11", "-O2", filePath + "/" + fileName, "-o", executeFilePath)
-                    .inheritIO()
+                    .command("g++", "-std=c++11", "-O2", "-Wno-unused-result", filePath + "/" + fileName, "-o", executeFilePath)
                     .start();
+
+                getOutputStringBuilder(sb, compile, true);
                 compile.waitFor();
+
+                if(sb.length() != 0) return;
 
                 final Process execute =
                 new ProcessBuilder()
                     .command("bash", "-c", executeFilePath)
                     .start();
                 
-                getOutputStringBuilder(sb, execute);
+                getOutputStringBuilder(sb, execute, false);
 
                 execute.waitFor();
 
@@ -131,35 +137,23 @@ public class Compile {
 
         Runnable javaRun = () -> {
             try {
+                // "-Xstdout", filePath + "/errorCode.txt",
                 final Process compile = 
                 new ProcessBuilder()
-                .command("javac", "-encoding", "UTF-8", "-Xstdout", filePath + "/errorCode.txt", filePath + "/" + fileName)
-                // .inheritIO()
+                .command("javac", "-encoding", "UTF-8",  filePath + "/" + fileName)
                 .start();
 
+                getOutputStringBuilder(sb, compile, true);
                 compile.waitFor();
-                // System.out.println(sb.toString());
-                File errorCapture = new File(filePath + "/errorCode.txt");
-                if(errorCapture.exists()) {
-                    FileReader fileReader = new FileReader(errorCapture);
-                    BufferedReader bufReader = new BufferedReader(fileReader);
-                    String line = "";
-                    while((line = bufReader.readLine()) != null) {
-                        sb.append(line);
-                    }
 
-                    if(errorCapture.delete()) {
-                        System.out.println("파일 제거");
-                    }
-                    return;
-                }
+                if(sb.length() != 0) return;
 
                 final Process execute =
                 new ProcessBuilder()
                 .command("java", "-cp", filePath, "-Dfile.encoding=utf-8", "Main")
                 .start();
 
-                getOutputStringBuilder(sb, execute);
+                getOutputStringBuilder(sb, execute, false);
 
                 execute.waitFor();
 
@@ -183,7 +177,7 @@ public class Compile {
                 final Process execute = 
                 new ProcessBuilder()
                 .command("node", filePath + "/" + fileName).start();
-                getOutputStringBuilder(sb, execute);
+                getOutputStringBuilder(sb, execute, false);
             } catch (IOException io) {
                 throw new RuntimeException();
             }
@@ -202,7 +196,7 @@ public class Compile {
                 final Process execute = 
                 new ProcessBuilder()
                 .command("python3", filePath + "/" + fileName).start();
-                getOutputStringBuilder(sb, execute);
+                getOutputStringBuilder(sb, execute, false);
             } catch (IOException io) {
                 throw new RuntimeException();
             }
@@ -241,8 +235,9 @@ public class Compile {
         }
     }
 
-    private static StringBuilder getOutputStringBuilder(StringBuilder sb, Process execute) throws IOException {
-        BufferedReader br = new BufferedReader(new InputStreamReader(execute.getInputStream()));
+    private static StringBuilder getOutputStringBuilder(StringBuilder sb, Process execute, boolean errorBool) throws IOException {
+        InputStream exStream = errorBool ? execute.getErrorStream() : execute.getInputStream();
+        BufferedReader br = new BufferedReader(new InputStreamReader(exStream));
         String line;
         while((line=br.readLine()) != null) {
             sb.append(line);
