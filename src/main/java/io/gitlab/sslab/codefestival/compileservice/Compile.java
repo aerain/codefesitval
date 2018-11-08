@@ -46,6 +46,7 @@ public class Compile {
                     resultStringBuilder = compile.runNode(filePath, fileName);
                     break;
                 case "py":
+                    resultStringBuilder = compile.runPython(filePath, fileName);
                     break;
                 case "java":
                     resultStringBuilder = compile.javaCompile(filePath, "Main.java");
@@ -189,6 +190,25 @@ public class Compile {
         };
 
         startSubProcess(jsRun);
+
+        return sb;
+    }
+
+    public StringBuilder runPython(final String filePath, final String fileName) {
+        StringBuilder sb = new StringBuilder();
+        
+        Runnable pyRun = () -> {
+            try {
+                final Process execute = 
+                new ProcessBuilder()
+                .command("python3", filePath + "/" + fileName).start();
+                getOutputStringBuilder(sb, execute);
+            } catch (IOException io) {
+                throw new RuntimeException();
+            }
+        };
+
+        startSubProcess(pyRun);
 
         return sb;
     }
