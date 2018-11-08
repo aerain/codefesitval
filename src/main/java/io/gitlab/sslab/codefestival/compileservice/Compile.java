@@ -40,7 +40,7 @@ public class Compile {
                     resultStringBuilder = compile.cCompile(filePath, fileName);
                     break;
                 case "cpp":
-                    // resultStringBuilder = compile.cppCompile(filePath, fileName);
+                    resultStringBuilder = compile.cppCompile(filePath, fileName);
                     break;
                 case "js":
                     resultStringBuilder = compile.runNode(filePath, fileName);
@@ -59,7 +59,7 @@ public class Compile {
         
         System.out.println(resultStringBuilder.toString());
 
-        return resultStringBuilder.toString();
+        return resultStringBuilder.toString().trim() != "" ? resultStringBuilder.toString() : "오류 발생!";
     }
     
     public StringBuilder cCompile(final String filePath, final String fileName) {
@@ -70,7 +70,8 @@ public class Compile {
             try {
                 final Process compile = 
                 new ProcessBuilder()
-                    .command("clang", "-O2", filePath + "/" + fileName, "-o", executeFilePath)
+                    .command("clang++", "-O2", "-Wno-unused-result", filePath + "/" + fileName, "-o", executeFilePath)
+                    .inheritIO()
                     .start();
                 compile.waitFor();
 
@@ -93,8 +94,35 @@ public class Compile {
         return sb;
     }
 
-    public String cppCompile(String filePath, String fileName) {
-        return "c++였습니다.";
+    public StringBuilder cppCompile(String filePath, String fileName) {
+        String executeFilePath = filePath + "/a.out";
+        StringBuilder sb = new StringBuilder();
+        Runnable cRun = () -> {
+            try {
+                final Process compile = 
+                new ProcessBuilder()
+                    .command("clang", "-O2", filePath + "/" + fileName, "-o", executeFilePath)
+                    .inheritIO()
+                    .start();
+                compile.waitFor();
+
+                final Process execute =
+                new ProcessBuilder()
+                    .command("bash", "-c", executeFilePath)
+                    .start();
+                
+                getOutputStringBuilder(sb, execute);
+
+                execute.waitFor();
+
+                deleteFile(executeFilePath);
+            } catch (Exception io) {
+                throw new RuntimeException(io);
+            }
+        };
+
+        startSubProcess(cRun);
+        return sb;
     }
 
     public StringBuilder javaCompile(final String filePath, final String fileName) {
