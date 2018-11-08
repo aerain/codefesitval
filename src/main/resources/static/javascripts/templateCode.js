@@ -16,7 +16,7 @@ var template = {
     cpp: `
     #include <iostream>
     
-    int main(void) {
+    int main(int argc, char* argv[]) {
         // 여기에 코드를 작성하세요.
         return 0;
     }
