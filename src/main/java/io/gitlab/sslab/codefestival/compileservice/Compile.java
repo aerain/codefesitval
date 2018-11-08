@@ -101,15 +101,15 @@ public class Compile {
             try {
                 final Process compile = 
                 new ProcessBuilder()
-                .command("javac", "-encoding", "UTF-8", filePath + "/" + fileName)
-                .inheritIO()
+                .command("javac", "-encoding", "UTF-8", filePath + "/" + fileName, "1")
                 .start();
 
-                compile.waitFor();
+                getOutputStringBuilder(sb, compile);
+                System.out.println(sb.toString());
 
                 final Process execute =
                 new ProcessBuilder()
-                .command("java", "-cp", filePath, "Main")
+                .command("java", "-cp", filePath, "-Dfile.encoding=utf-8", "Main")
                 .start();
     
                 getOutputStringBuilder(sb, execute);
@@ -166,7 +166,6 @@ public class Compile {
         BufferedReader br = new BufferedReader(new InputStreamReader(execute.getInputStream()));
         String line;
         while((line=br.readLine()) != null) {
-            System.out.println(line);
             sb.append(line);
             sb.append(System.getProperty("line.separator"));
         }

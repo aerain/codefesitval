@@ -74,7 +74,7 @@ background-color: #343a40;
 }
 .result{
   width: 100%;
-    text-align: center;
+    /* text-align: center; */
     background-color: #343a40;
     border-top: solid black 1px;
     height: 20%;
