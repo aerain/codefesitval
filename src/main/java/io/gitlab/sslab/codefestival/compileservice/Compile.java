@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
@@ -65,24 +66,26 @@ public class Compile {
 
         String executeFilePath = filePath + "/a.out";
         StringBuilder sb = new StringBuilder();
-        Runnable cRun = new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    final Process compile = 
-                    new ProcessBuilder()
-                        .command("clang", "-O2", filePath + "/" + fileName, "-o", executeFilePath)
-                        .start();
-                    
-                    final Process execute =
-                    new ProcessBuilder()
-                        .command("bash", executeFilePath)
-                        .start();
-                    
-                    getOutputStringBuilder(sb, execute);
-                } catch (IOException io) {
-                    throw new RuntimeException(io);
-                }
+        Runnable cRun = () -> {
+            try {
+                final Process compile = 
+                new ProcessBuilder()
+                    .command("clang", "-O2", filePath + "/" + fileName, "-o", executeFilePath)
+                    .start();
+                compile.waitFor();
+
+                final Process execute =
+                new ProcessBuilder()
+                    .command("bash", "-c", executeFilePath)
+                    .start();
+                
+                getOutputStringBuilder(sb, execute);
+
+                execute.waitFor();
+
+                deleteFile(executeFilePath);
+            } catch (Exception io) {
+                throw new RuntimeException(io);
             }
         };
 
@@ -101,18 +104,37 @@ public class Compile {
             try {
                 final Process compile = 
                 new ProcessBuilder()
-                .command("javac", "-encoding", "UTF-8", filePath + "/" + fileName, "1")
+                .command("javac", "-encoding", "UTF-8", "-Xstdout", filePath + "/errorCode.txt", filePath + "/" + fileName)
+                // .inheritIO()
                 .start();
 
-                getOutputStringBuilder(sb, compile);
-                System.out.println(sb.toString());
+                compile.waitFor();
+                // System.out.println(sb.toString());
+                File errorCapture = new File(filePath + "/errorCode.txt");
+                if(errorCapture.exists()) {
+                    FileReader fileReader = new FileReader(errorCapture);
+                    BufferedReader bufReader = new BufferedReader(fileReader);
+                    String line = "";
+                    while((line = bufReader.readLine()) != null) {
+                        sb.append(line);
+                    }
+
+                    if(errorCapture.delete()) {
+                        System.out.println("파일 제거");
+                    }
+                    return;
+                }
 
                 final Process execute =
                 new ProcessBuilder()
                 .command("java", "-cp", filePath, "-Dfile.encoding=utf-8", "Main")
                 .start();
-    
+
                 getOutputStringBuilder(sb, execute);
+
+                execute.waitFor();
+
+                deleteFile(filePath + "/" + "Main.class");
     
             } catch (Exception io){
                 throw new RuntimeException();
@@ -120,7 +142,7 @@ public class Compile {
         };
 
         startSubProcess(javaRun);
-        
+        System.out.println(sb.toString());
         return sb;
     }
 
@@ -159,6 +181,15 @@ public class Compile {
             try {
                 writer.close();
             } catch (IOException ex) {}
+        }
+    }
+
+    private static void deleteFile(String filePath) {
+        File classFile = new File(filePath);
+        if(classFile.exists()) {
+            if(classFile.delete()) {
+                System.out.println("제거");
+            }
         }
     }
 

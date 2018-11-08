@@ -33,7 +33,7 @@ public class CompileController {
     public String postCompile(@RequestBody CompileRequest code) {
         String result = Compile.compile(code.getLanguage(), code.getCreateAuthor(), code.getCode());
         
-        System.out.println(code.toString());
+        // System.out.println(code.toString());
         return result;
     }
 }
